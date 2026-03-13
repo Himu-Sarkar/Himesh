@@ -152,6 +152,78 @@
       padding: 0 24px;
     }
 
+    /* === Server Info Box === */
+    .server-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #111d2e;
+      border: 1px solid #1a2636;
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .server-info__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #5b7fff, #3a5fd9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .server-info__icon svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+    .server-info__details {
+      flex: 1;
+      min-width: 0;
+    }
+    .server-info__name {
+      font-weight: 700;
+      font-size: .95rem;
+      color: #e8ecf0;
+    }
+    .server-info__ip {
+      font-size: .82rem;
+      color: #5b7fff;
+      font-weight: 600;
+      letter-spacing: .3px;
+    }
+    .server-info__ip-label {
+      color: #576a82;
+      font-weight: 400;
+      margin-right: 4px;
+    }
+    .server-info__btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1px solid #1e2d42;
+      background: #162032;
+      color: #c8d6e5;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .server-info__btn:hover {
+      background: #1c2b40;
+      border-color: #5b7fff;
+      color: #fff;
+    }
+    .server-info__btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
     /* === Ranking Card === */
     .ranking-card {
       background: #111d2e;
@@ -196,6 +268,7 @@
     .ranking-table tbody tr {
       border-bottom: 1px solid #141f30;
       transition: background .15s;
+      cursor: pointer;
     }
     .ranking-table tbody tr:last-child { border-bottom: none; }
     .ranking-table tbody tr:hover { background: #15213466; }
@@ -211,11 +284,16 @@
       font-size: .95rem;
       color: #576a82;
       width: 36px;
-      text-align: center;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: #162032;
     }
-    .rank-num.top1 { color: #ffd700; }
-    .rank-num.top2 { color: #c0c0c0; }
-    .rank-num.top3 { color: #cd7f32; }
+    .rank-num.top1 { color: #ffd700; background: #2a2410; border: 1px solid #ffd70033; }
+    .rank-num.top2 { color: #c0c0c0; background: #1e2228; border: 1px solid #c0c0c033; }
+    .rank-num.top3 { color: #cd7f32; background: #2a1e14; border: 1px solid #cd7f3233; }
 
     /* Player cell */
     .player-cell {
@@ -224,23 +302,40 @@
       gap: 12px;
     }
     .player-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 4px;
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
       image-rendering: pixelated;
       background: #1a2636;
       flex-shrink: 0;
+      border: 2px solid #1e2d42;
+    }
+    .player-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
     .player-name {
-      font-weight: 600;
+      font-weight: 700;
       font-size: .95rem;
       color: #e8ecf0;
+    }
+    .player-title {
+      font-size: .75rem;
+      color: #576a82;
+      font-weight: 500;
+    }
+    .player-title .points {
+      color: #5b7fff;
+      font-weight: 600;
     }
 
     /* Region badge */
     .region-badge {
-      display: inline-block;
-      padding: 3px 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 12px;
       border-radius: 6px;
       font-size: .72rem;
       font-weight: 700;
@@ -250,12 +345,16 @@
     .region-badge.na { background: #1a3a2a; color: #4ade80; }
     .region-badge.eu { background: #1a2a4a; color: #60a5fa; }
     .region-badge.as { background: #3a2a1a; color: #fbbf24; }
+    .region-badge.sa { background: #2a1a3a; color: #c084fc; }
+    .region-badge.oce { background: #1a3038; color: #2dd4bf; }
 
     /* Tier badges */
     .tier-badges { display: flex; gap: 6px; flex-wrap: wrap; }
     .tier-badge {
-      display: inline-block;
-      padding: 3px 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
       border-radius: 6px;
       font-size: .72rem;
       font-weight: 700;
@@ -267,6 +366,8 @@
     .tier-badge.lt2 { background: #1a3a30; color: #34d399; }
     .tier-badge.ht3 { background: #3a3a1a; color: #fbbf24; }
     .tier-badge.lt3 { background: #2a2a2a; color: #94a3b8; }
+    .tier-badge.ht4 { background: #2a2020; color: #f87171; }
+    .tier-badge.lt4 { background: #202a20; color: #6ee7b7; }
 
     /* === Footer === */
     .footer {
@@ -276,6 +377,46 @@
       font-size: .78rem;
       border-top: 1px solid #141f30;
       margin-top: 40px;
+    }
+
+    /* === Tooltip (for info button) === */
+    .tooltip-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .tooltip-content {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 10px);
+      right: 0;
+      background: #162032;
+      border: 1px solid #1e2d42;
+      border-radius: 10px;
+      padding: 14px 18px;
+      min-width: 240px;
+      font-size: .82rem;
+      color: #c8d6e5;
+      z-index: 200;
+      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+      line-height: 1.6;
+    }
+    .tooltip-content.show { display: block; }
+    .tooltip-content::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      right: 20px;
+      border: 8px solid transparent;
+      border-top-color: #1e2d42;
+    }
+
+    /* === Search highlight === */
+    .search-active .ranking-table tbody tr {
+      opacity: 0.3;
+      transition: opacity .2s;
+    }
+    .search-active .ranking-table tbody tr.search-match {
+      opacity: 1;
     }
 
     /* === Mobile === */
@@ -314,6 +455,14 @@
       .main { padding: 0 12px; }
       .ranking-card__header { padding: 14px 16px; }
       .tabs { padding: 12px 12px; }
+      .server-info { padding: 12px 14px; gap: 12px; }
+    }
+
+    @media (max-width: 480px) {
+      .navbar { padding: 0 12px; }
+      .navbar__logo { font-size: 1.15rem; }
+      .server-info__icon { width: 34px; height: 34px; }
+      .server-info__icon svg { width: 18px; height: 18px; }
     }
   </style>
 </head>
@@ -326,11 +475,11 @@
       <li><a href="#" class="active">Home</a></li>
       <li><a href="#">Rankings</a></li>
       <li><a href="#">Discord</a></li>
-      <li><a href="#">API</a></li>
+      <li><a href="#">API Docs</a></li>
     </ul>
     <div class="navbar__search">
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      <input type="text" placeholder="Search player...">
+      <input type="text" placeholder="Search player..." id="searchInput">
     </div>
     <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
       <span></span><span></span><span></span>
@@ -340,19 +489,48 @@
   <!-- Category Tabs -->
   <div class="tabs" id="tabs">
     <div class="tab active" data-tab="overall">Overall</div>
+    <div class="tab" data-tab="ltms">LTMs</div>
+    <div class="tab" data-tab="vanilla">Vanilla</div>
+    <div class="tab" data-tab="uhc">UHC</div>
+    <div class="tab" data-tab="pot">Pot</div>
+    <div class="tab" data-tab="nethop">NethOP</div>
+    <div class="tab" data-tab="smp">SMP</div>
     <div class="tab" data-tab="sword">Sword</div>
     <div class="tab" data-tab="axe">Axe</div>
-    <div class="tab" data-tab="pot">Pot</div>
-    <div class="tab" data-tab="uhc">UHC</div>
-    <div class="tab" data-tab="smp">SMP</div>
+    <div class="tab" data-tab="mace">Mace</div>
   </div>
 
   <!-- Main Content -->
   <main class="main">
+
+    <!-- Server Info Box -->
+    <div class="server-info">
+      <div class="server-info__icon">
+        <svg viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H4V5h16v14zM6 7h5v5H6zm7 0h5v2h-5zm0 4h5v2h-5zm0 4h5v2h-5zM6 13h5v4H6z"/></svg>
+      </div>
+      <div class="server-info__details">
+        <div class="server-info__name">ASTIERS-list Ranked Server</div>
+        <div class="server-info__ip"><span class="server-info__ip-label">Server IP:</span>mcpvp.club</div>
+      </div>
+      <div class="tooltip-wrap">
+        <button class="server-info__btn" id="infoBtn">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          Information
+        </button>
+        <div class="tooltip-content" id="infoTooltip">
+          <strong>About ASTIERS-list</strong><br>
+          Community-driven Minecraft PvP tier rankings. Players are ranked across multiple game modes based on skill level.<br><br>
+          <strong>How tiers work:</strong><br>
+          HT1 (High Tier 1) is the highest. Tiers range from HT1 down to LT4. Rankings are updated regularly by the moderation team.
+        </div>
+      </div>
+    </div>
+
+    <!-- Ranking Card -->
     <div class="ranking-card">
       <div class="ranking-card__header">
         <div class="ranking-card__title" id="categoryTitle">Overall Rankings</div>
-        <div class="ranking-card__count" id="playerCount">12 players</div>
+        <div class="ranking-card__count" id="playerCount">20 players</div>
       </div>
       <table class="ranking-table">
         <thead>
@@ -373,34 +551,47 @@
   </footer>
 
   <script>
-    // Sample player data
-    const players = [
-      { name: "xFireStriker",   region: "NA", tiers: ["HT1"],       uuid: "c06f8906-4c8a-4911-9c29-ea1dbd1aab82" },
-      { name: "PvPLegend_",     region: "EU", tiers: ["HT1","LT1"], uuid: "069a79f4-44e9-4726-a5be-fca90e38aaf5" },
-      { name: "ShadowBlade99",  region: "NA", tiers: ["LT1"],       uuid: "853c80ef-3c37-49fd-aa49-938b674adae6" },
-      { name: "CrystalRush",    region: "EU", tiers: ["HT2"],       uuid: "a2080281-c270-45b6-b5a0-4060f07a1dac" },
-      { name: "NetherKing7",    region: "AS", tiers: ["HT2","LT2"], uuid: "e793b2ca-7f21-45a0-9c30-01bf0c6ce5ba" },
-      { name: "IceW0lf",        region: "NA", tiers: ["LT2"],       uuid: "7125ba8b-1c86-4508-b92b-b5c042ccfe2b" },
-      { name: "B1adeRunner",    region: "EU", tiers: ["HT3"],       uuid: "3e20be3c-28f9-424e-9d96-0f9d5a4e6ea3" },
-      { name: "AquaAssassin",   region: "NA", tiers: ["HT3","LT3"], uuid: "2f3665cc-b8fc-47b0-8988-d4d5b23d8a69" },
-      { name: "StormPvP__",     region: "EU", tiers: ["LT3"],       uuid: "4566e69f-c907-48ee-8d71-d7ba5aa00d20" },
-      { name: "VoidSniper",     region: "AS", tiers: ["HT2"],       uuid: "b876ec32-e396-476b-a115-8438d83c67d4" },
-      { name: "EnderWraith",    region: "NA", tiers: ["LT2","HT3"], uuid: "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d" },
-      { name: "PhantomAce_",    region: "EU", tiers: ["LT3"],       uuid: "6d7e8f9a-0b1c-2d3e-4f5a-6b7c8d9e0f1a" },
+    /* === Player Data === */
+    var players = [
+      { name: "xFireStriker",   region: "NA", title: "Combat Master",       points: 330, tiers: ["HT1"],             uuid: "c06f8906-4c8a-4911-9c29-ea1dbd1aab82" },
+      { name: "PvPLegend_",     region: "EU", title: "Blade Sovereign",     points: 315, tiers: ["HT1","LT1"],       uuid: "069a79f4-44e9-4726-a5be-fca90e38aaf5" },
+      { name: "ShadowBlade99",  region: "NA", title: "Shadow Elite",        points: 298, tiers: ["LT1"],             uuid: "853c80ef-3c37-49fd-aa49-938b674adae6" },
+      { name: "CrystalRush",    region: "EU", title: "Crystal Warlord",     points: 284, tiers: ["HT2"],             uuid: "a2080281-c270-45b6-b5a0-4060f07a1dac" },
+      { name: "NetherKing7",    region: "AS", title: "Nether Overlord",     points: 271, tiers: ["HT2","LT2"],       uuid: "e793b2ca-7f21-45a0-9c30-01bf0c6ce5ba" },
+      { name: "IceW0lf",        region: "NA", title: "Frost Assassin",      points: 260, tiers: ["LT2"],             uuid: "7125ba8b-1c86-4508-b92b-b5c042ccfe2b" },
+      { name: "B1adeRunner",    region: "EU", title: "Rogue Striker",       points: 248, tiers: ["HT3"],             uuid: "3e20be3c-28f9-424e-9d96-0f9d5a4e6ea3" },
+      { name: "AquaAssassin",   region: "NA", title: "Tide Hunter",         points: 235, tiers: ["HT3","LT3"],       uuid: "2f3665cc-b8fc-47b0-8988-d4d5b23d8a69" },
+      { name: "StormPvP__",     region: "EU", title: "Thunder Vanguard",    points: 222, tiers: ["LT3"],             uuid: "4566e69f-c907-48ee-8d71-d7ba5aa00d20" },
+      { name: "VoidSniper",     region: "AS", title: "Void Ranger",         points: 210, tiers: ["HT2"],             uuid: "b876ec32-e396-476b-a115-8438d83c67d4" },
+      { name: "EnderWraith",    region: "NA", title: "Ender Phantom",       points: 198, tiers: ["LT2","HT3"],       uuid: "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d" },
+      { name: "PhantomAce_",    region: "EU", title: "Spectral Duelist",    points: 185, tiers: ["LT3"],             uuid: "6d7e8f9a-0b1c-2d3e-4f5a-6b7c8d9e0f1a" },
+      { name: "BlazeMaster42",  region: "NA", title: "Infernal Knight",     points: 174, tiers: ["HT2","LT2"],       uuid: "a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+      { name: "FrostByte_PvP",  region: "EU", title: "Arctic Sentinel",     points: 163, tiers: ["LT2"],             uuid: "b2c3d4e5-f6a7-8901-bcde-f12345678901" },
+      { name: "DragonSlayerX",  region: "AS", title: "Wyrm Conqueror",      points: 152, tiers: ["HT3"],             uuid: "c3d4e5f6-a7b8-9012-cdef-123456789012" },
+      { name: "PixelWarrior",   region: "SA", title: "Digital Gladiator",   points: 141, tiers: ["HT3","LT3"],       uuid: "d4e5f6a7-b8c9-0123-defa-234567890123" },
+      { name: "NightHawk_MC",   region: "NA", title: "Shadow Striker",      points: 130, tiers: ["LT3"],             uuid: "e5f6a7b8-c9d0-1234-efab-345678901234" },
+      { name: "CobaltCrusher",  region: "EU", title: "Iron Vanguard",       points: 119, tiers: ["HT3"],             uuid: "f6a7b8c9-d0e1-2345-fabc-456789012345" },
+      { name: "ObsidianEdge",   region: "NA", title: "Void Walker",         points: 108, tiers: ["LT3","HT4"],       uuid: "a7b8c9d0-e1f2-3456-abcd-567890123456" },
+      { name: "ZephyrBlade",    region: "OCE",title: "Wind Dancer",         points:  97, tiers: ["LT3"],             uuid: "b8c9d0e1-f2a3-4567-bcde-678901234567" },
     ];
 
-    const tabData = {
-      overall: players,
-      sword:   players.slice(0, 8),
-      axe:     players.slice(2, 10),
-      pot:     players.slice(1, 7),
-      uhc:     players.slice(3, 11),
-      smp:     players.slice(4, 12),
+    /* === Tab Data (different subsets per mode) === */
+    var tabData = {
+      overall:  players,
+      ltms:     players.filter(function(_, i) { return i % 2 === 0; }),
+      vanilla:  players.slice(0, 14),
+      uhc:      players.slice(1, 16),
+      pot:      players.slice(2, 15),
+      nethop:   players.slice(3, 17),
+      smp:      players.slice(4, 18),
+      sword:    players.slice(0, 12),
+      axe:      players.slice(5, 19),
+      mace:     players.slice(6, 20),
     };
 
+    /* === Helpers === */
     function avatarUrl(uuid) {
-      // Crafatar provides Minecraft-style avatars
-      return "https://crafatar.com/avatars/" + uuid + "?size=36&overlay";
+      return "https://crafatar.com/avatars/" + uuid + "?size=40&overlay";
     }
 
     function rankClass(i) {
@@ -418,31 +609,55 @@
       return "region-badge " + r.toLowerCase();
     }
 
+    function escapeHtml(str) {
+      var div = document.createElement("div");
+      div.appendChild(document.createTextNode(str));
+      return div.innerHTML;
+    }
+
+    /* === Render Table === */
+    var currentCategory = "overall";
+
     function renderTable(category) {
+      currentCategory = category;
       var list = tabData[category] || players;
       var body = document.getElementById("rankingBody");
       body.innerHTML = "";
-      document.getElementById("categoryTitle").textContent =
-        category.charAt(0).toUpperCase() + category.slice(1) + " Rankings";
+
+      var titleText = category.charAt(0).toUpperCase() + category.slice(1);
+      if (category === "ltms") titleText = "LTMs";
+      if (category === "uhc") titleText = "UHC";
+      if (category === "smp") titleText = "SMP";
+      if (category === "nethop") titleText = "NethOP";
+
+      document.getElementById("categoryTitle").textContent = titleText + " Rankings";
       document.getElementById("playerCount").textContent = list.length + " players";
 
       list.forEach(function(p, i) {
         var tr = document.createElement("tr");
+        tr.setAttribute("data-name", p.name.toLowerCase());
         tr.innerHTML =
           '<td><div class="' + rankClass(i) + '">' + (i + 1) + '</div></td>' +
           '<td><div class="player-cell">' +
-            '<img class="player-avatar" src="' + avatarUrl(p.uuid) + '" alt="' + p.name + '" loading="lazy">' +
-            '<span class="player-name">' + p.name + '</span>' +
+            '<img class="player-avatar" src="' + avatarUrl(p.uuid) + '" alt="' + escapeHtml(p.name) + '" loading="lazy">' +
+            '<div class="player-info">' +
+              '<span class="player-name">' + escapeHtml(p.name) + '</span>' +
+              '<span class="player-title">' + escapeHtml(p.title) + ' &ndash; <span class="points">' + p.points + ' pts</span></span>' +
+            '</div>' +
           '</div></td>' +
-          '<td><span class="' + regionClass(p.region) + '">' + p.region + '</span></td>' +
+          '<td><span class="' + regionClass(p.region) + '">' + escapeHtml(p.region) + '</span></td>' +
           '<td class="td-tier"><div class="tier-badges">' +
-            p.tiers.map(function(t) { return '<span class="' + tierClass(t) + '">' + t + '</span>'; }).join('') +
+            p.tiers.map(function(t) { return '<span class="' + tierClass(t) + '">' + escapeHtml(t) + '</span>'; }).join('') +
           '</div></td>';
         body.appendChild(tr);
       });
+
+      /* Re-apply active search filter */
+      var query = document.getElementById("searchInput").value.trim().toLowerCase();
+      applySearch(query);
     }
 
-    // Tab click handling
+    /* === Tab Click Handling === */
     document.getElementById("tabs").addEventListener("click", function(e) {
       if (!e.target.classList.contains("tab")) return;
       document.querySelectorAll(".tab").forEach(function(t) { t.classList.remove("active"); });
@@ -450,12 +665,47 @@
       renderTable(e.target.getAttribute("data-tab"));
     });
 
-    // Mobile hamburger menu
+    /* === Mobile Hamburger Menu === */
     document.getElementById("hamburger").addEventListener("click", function() {
       document.getElementById("navLinks").classList.toggle("open");
     });
 
-    // Initial render
+    /* === Search Functionality === */
+    function applySearch(query) {
+      var card = document.querySelector(".ranking-card");
+      var rows = document.querySelectorAll("#rankingBody tr");
+
+      if (!query) {
+        card.classList.remove("search-active");
+        rows.forEach(function(row) { row.classList.remove("search-match"); });
+        return;
+      }
+
+      card.classList.add("search-active");
+      rows.forEach(function(row) {
+        var name = row.getAttribute("data-name") || "";
+        if (name.indexOf(query) !== -1) {
+          row.classList.add("search-match");
+        } else {
+          row.classList.remove("search-match");
+        }
+      });
+    }
+
+    document.getElementById("searchInput").addEventListener("input", function() {
+      applySearch(this.value.trim().toLowerCase());
+    });
+
+    /* === Info Tooltip === */
+    document.getElementById("infoBtn").addEventListener("click", function(e) {
+      e.stopPropagation();
+      document.getElementById("infoTooltip").classList.toggle("show");
+    });
+    document.addEventListener("click", function() {
+      document.getElementById("infoTooltip").classList.remove("show");
+    });
+
+    /* === Initial Render === */
     renderTable("overall");
   </script>
 </body>
