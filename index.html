@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASTIERS-list — PvP Rankings</title>
+  <style>
+    /* === Reset & Base === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b1220;
+      color: #c8d6e5;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    a { color: #c8d6e5; text-decoration: none; transition: color .2s; }
+    a:hover { color: #fff; }
+
+    /* === Navbar === */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 60px;
+      background: #0f1923;
+      border-bottom: 1px solid #1a2636;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar__logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: .5px;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .navbar__logo span { color: #5b7fff; }
+    .navbar__links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .navbar__links a {
+      font-size: .9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      padding: 4px 0;
+      position: relative;
+    }
+    .navbar__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #5b7fff;
+      transition: width .25s;
+    }
+    .navbar__links a:hover::after,
+    .navbar__links a.active::after { width: 100%; }
+    .navbar__links a.active { color: #fff; }
+    .navbar__search {
+      position: relative;
+    }
+    .navbar__search input {
+      background: #162032;
+      border: 1px solid #1e2d42;
+      border-radius: 8px;
+      padding: 8px 14px 8px 36px;
+      color: #c8d6e5;
+      font-size: .85rem;
+      width: 200px;
+      outline: none;
+      transition: border-color .2s, width .3s;
+    }
+    .navbar__search input::placeholder { color: #576a82; }
+    .navbar__search input:focus {
+      border-color: #5b7fff;
+      width: 240px;
+    }
+    .navbar__search svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      fill: #576a82;
+      pointer-events: none;
+    }
+    .navbar__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .navbar__hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #c8d6e5;
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+
+    /* === Category Tabs === */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 16px 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: #0d1628;
+      border-bottom: 1px solid #1a2636;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #162032;
+      border: 1px solid #1e2d42;
+      color: #8899aa;
+      white-space: nowrap;
+      transition: all .2s;
+      user-select: none;
+    }
+    .tab:hover {
+      background: #1c2b40;
+      color: #c8d6e5;
+    }
+    .tab.active {
+      background: #5b7fff;
+      color: #fff;
+      border-color: #5b7fff;
+    }
+
+    /* === Main Content === */
+    .main {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 24px;
+    }
+
+    /* === Ranking Card === */
+    .ranking-card {
+      background: #111d2e;
+      border: 1px solid #1a2636;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .ranking-card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      border-bottom: 1px solid #1a2636;
+    }
+    .ranking-card__title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .ranking-card__count {
+      font-size: .8rem;
+      color: #576a82;
+    }
+
+    /* === Table === */
+    .ranking-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .ranking-table thead th {
+      padding: 12px 20px;
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: #576a82;
+      text-align: left;
+      background: #0e1829;
+      border-bottom: 1px solid #1a2636;
+    }
+    .ranking-table thead th:first-child { padding-left: 24px; width: 60px; }
+    .ranking-table tbody tr {
+      border-bottom: 1px solid #141f30;
+      transition: background .15s;
+    }
+    .ranking-table tbody tr:last-child { border-bottom: none; }
+    .ranking-table tbody tr:hover { background: #15213466; }
+    .ranking-table td {
+      padding: 14px 20px;
+      vertical-align: middle;
+    }
+    .ranking-table td:first-child { padding-left: 24px; }
+
+    /* Rank number */
+    .rank-num {
+      font-weight: 700;
+      font-size: .95rem;
+      color: #576a82;
+      width: 36px;
+      text-align: center;
+    }
+    .rank-num.top1 { color: #ffd700; }
+    .rank-num.top2 { color: #c0c0c0; }
+    .rank-num.top3 { color: #cd7f32; }
+
+    /* Player cell */
+    .player-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .player-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      image-rendering: pixelated;
+      background: #1a2636;
+      flex-shrink: 0;
+    }
+    .player-name {
+      font-weight: 600;
+      font-size: .95rem;
+      color: #e8ecf0;
+    }
+
+    /* Region badge */
+    .region-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .region-badge.na { background: #1a3a2a; color: #4ade80; }
+    .region-badge.eu { background: #1a2a4a; color: #60a5fa; }
+    .region-badge.as { background: #3a2a1a; color: #fbbf24; }
+
+    /* Tier badges */
+    .tier-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tier-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+    .tier-badge.ht1 { background: #4a1a2a; color: #ff6b8a; }
+    .tier-badge.lt1 { background: #3a1a3a; color: #c084fc; }
+    .tier-badge.ht2 { background: #1a3040; color: #38bdf8; }
+    .tier-badge.lt2 { background: #1a3a30; color: #34d399; }
+    .tier-badge.ht3 { background: #3a3a1a; color: #fbbf24; }
+    .tier-badge.lt3 { background: #2a2a2a; color: #94a3b8; }
+
+    /* === Footer === */
+    .footer {
+      text-align: center;
+      padding: 32px 24px;
+      color: #3a4a5c;
+      font-size: .78rem;
+      border-top: 1px solid #141f30;
+      margin-top: 40px;
+    }
+
+    /* === Mobile === */
+    @media (max-width: 768px) {
+      .navbar__links { display: none; }
+      .navbar__hamburger { display: flex; }
+      .navbar__links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: #0f1923;
+        padding: 16px 24px;
+        gap: 16px;
+        border-bottom: 1px solid #1a2636;
+        z-index: 99;
+      }
+      .navbar__search input { width: 140px; }
+      .navbar__search input:focus { width: 160px; }
+      .ranking-table thead { display: none; }
+      .ranking-table tbody tr {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 16px;
+        padding: 14px 16px;
+      }
+      .ranking-table td {
+        padding: 0;
+        border: none;
+      }
+      .ranking-table td:first-child { padding-left: 0; }
+      .ranking-table td.td-tier { width: 100%; margin-top: 4px; }
+      .main { padding: 0 12px; }
+      .ranking-card__header { padding: 14px 16px; }
+      .tabs { padding: 12px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar__logo">ASTIERS<span>-list</span></div>
+    <ul class="navbar__links" id="navLinks">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#">Rankings</a></li>
+      <li><a href="#">Discord</a></li>
+      <li><a href="#">API</a></li>
+    </ul>
+    <div class="navbar__search">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" placeholder="Search player...">
+    </div>
+    <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Category Tabs -->
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-tab="overall">Overall</div>
+    <div class="tab" data-tab="sword">Sword</div>
+    <div class="tab" data-tab="axe">Axe</div>
+    <div class="tab" data-tab="pot">Pot</div>
+    <div class="tab" data-tab="uhc">UHC</div>
+    <div class="tab" data-tab="smp">SMP</div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main">
+    <div class="ranking-card">
+      <div class="ranking-card__header">
+        <div class="ranking-card__title" id="categoryTitle">Overall Rankings</div>
+        <div class="ranking-card__count" id="playerCount">12 players</div>
+      </div>
+      <table class="ranking-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Region</th>
+            <th>Tiers</th>
+          </tr>
+        </thead>
+        <tbody id="rankingBody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 ASTIERS-list &mdash; Not affiliated with Mojang Studios.
+  </footer>
+
+  <script>
+    // Sample player data
+    const players = [
+      { name: "xFireStriker",   region: "NA", tiers: ["HT1"],       uuid: "c06f8906-4c8a-4911-9c29-ea1dbd1aab82" },
+      { name: "PvPLegend_",     region: "EU", tiers: ["HT1","LT1"], uuid: "069a79f4-44e9-4726-a5be-fca90e38aaf5" },
+      { name: "ShadowBlade99",  region: "NA", tiers: ["LT1"],       uuid: "853c80ef-3c37-49fd-aa49-938b674adae6" },
+      { name: "CrystalRush",    region: "EU", tiers: ["HT2"],       uuid: "a2080281-c270-45b6-b5a0-4060f07a1dac" },
+      { name: "NetherKing7",    region: "AS", tiers: ["HT2","LT2"], uuid: "e793b2ca-7f21-45a0-9c30-01bf0c6ce5ba" },
+      { name: "IceW0lf",        region: "NA", tiers: ["LT2"],       uuid: "7125ba8b-1c86-4508-b92b-b5c042ccfe2b" },
+      { name: "B1adeRunner",    region: "EU", tiers: ["HT3"],       uuid: "3e20be3c-28f9-424e-9d96-0f9d5a4e6ea3" },
+      { name: "AquaAssassin",   region: "NA", tiers: ["HT3","LT3"], uuid: "2f3665cc-b8fc-47b0-8988-d4d5b23d8a69" },
+      { name: "StormPvP__",     region: "EU", tiers: ["LT3"],       uuid: "4566e69f-c907-48ee-8d71-d7ba5aa00d20" },
+      { name: "VoidSniper",     region: "AS", tiers: ["HT2"],       uuid: "b876ec32-e396-476b-a115-8438d83c67d4" },
+      { name: "EnderWraith",    region: "NA", tiers: ["LT2","HT3"], uuid: "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d" },
+      { name: "PhantomAce_",    region: "EU", tiers: ["LT3"],       uuid: "6d7e8f9a-0b1c-2d3e-4f5a-6b7c8d9e0f1a" },
+    ];
+
+    const tabData = {
+      overall: players,
+      sword:   players.slice(0, 8),
+      axe:     players.slice(2, 10),
+      pot:     players.slice(1, 7),
+      uhc:     players.slice(3, 11),
+      smp:     players.slice(4, 12),
+    };
+
+    function avatarUrl(uuid) {
+      // Crafatar provides Minecraft-style avatars
+      return "https://crafatar.com/avatars/" + uuid + "?size=36&overlay";
+    }
+
+    function rankClass(i) {
+      if (i === 0) return "rank-num top1";
+      if (i === 1) return "rank-num top2";
+      if (i === 2) return "rank-num top3";
+      return "rank-num";
+    }
+
+    function tierClass(t) {
+      return "tier-badge " + t.toLowerCase();
+    }
+
+    function regionClass(r) {
+      return "region-badge " + r.toLowerCase();
+    }
+
+    function renderTable(category) {
+      var list = tabData[category] || players;
+      var body = document.getElementById("rankingBody");
+      body.innerHTML = "";
+      document.getElementById("categoryTitle").textContent =
+        category.charAt(0).toUpperCase() + category.slice(1) + " Rankings";
+      document.getElementById("playerCount").textContent = list.length + " players";
+
+      list.forEach(function(p, i) {
+        var tr = document.createElement("tr");
+        tr.innerHTML =
+          '<td><div class="' + rankClass(i) + '">' + (i + 1) + '</div></td>' +
+          '<td><div class="player-cell">' +
+            '<img class="player-avatar" src="' + avatarUrl(p.uuid) + '" alt="' + p.name + '" loading="lazy">' +
+            '<span class="player-name">' + p.name + '</span>' +
+          '</div></td>' +
+          '<td><span class="' + regionClass(p.region) + '">' + p.region + '</span></td>' +
+          '<td class="td-tier"><div class="tier-badges">' +
+            p.tiers.map(function(t) { return '<span class="' + tierClass(t) + '">' + t + '</span>'; }).join('') +
+          '</div></td>';
+        body.appendChild(tr);
+      });
+    }
+
+    // Tab click handling
+    document.getElementById("tabs").addEventListener("click", function(e) {
+      if (!e.target.classList.contains("tab")) return;
+      document.querySelectorAll(".tab").forEach(function(t) { t.classList.remove("active"); });
+      e.target.classList.add("active");
+      renderTable(e.target.getAttribute("data-tab"));
+    });
+
+    // Mobile hamburger menu
+    document.getElementById("hamburger").addEventListener("click", function() {
+      document.getElementById("navLinks").classList.toggle("open");
+    });
+
+    // Initial render
+    renderTable("overall");
+  </script>
+</body>
+</html>
